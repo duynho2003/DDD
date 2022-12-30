@@ -178,11 +178,39 @@ go
 
 -- test case 1: that bai
 insert tbCustomer values
-('C010', 'Rahul Khana', '7th Cross Road', '298345878', 'khannar@hotmail.com', 'invalid')
+('C011', 'Rahul Khana', '7th Cross Road', '298345878', 'khannar@hotmail.com', 'invalid')
 go
 
--- test case 2: that bai
+-- test case 2: thanh cong
 insert tbCustomer values
 ('C010', 'Rahul Khana', '7th Cross Road', '298345878', 'khannar@hotmail.com', 'valid')
 go
 
+/*
+10. Create a trigger tgCustomer for table tbCustomer which deletes all related records in table tbMessage
+whenever a record of tbCustomer is deleted.
+*/
+create trigger tgCustomerRemove on tbCustomer
+instead of delete as
+begin
+	--1. xoa khach hang trong bang deleted
+	delete from tbCustomer
+		where CustCode in (select CustCode from deleted)
+
+	--2. xoa tin nhan trong bang deleted
+	delete from tbMessage
+		where CustCode in (select CustCode from deleted)
+end
+go
+
+-- test case: xoa khach hang co ma so C010
+select * from tbCustomer
+delete from tbCustomer where CustCode like 'C010'
+go
+
+-- xem lai bang khach hang
+select * from tbCustomer
+
+-- xem dinh nghia cua trigger [tgCustomerRemove]
+sp_helptext tgCustomerRemove
+go

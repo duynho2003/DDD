@@ -110,18 +110,18 @@ delete from tbEmployee where e_name like '% anh'
 
 -- test case 2: xoa nhan vien co ten la duy : Loi !!!
 select * from tbEmployee
-delete from tbEmployee where e_name like '% duy'
+delete from tbEmployee where e_name like '% duy' 
 go
 
 /*
-5. viet trigger tren bang sinh vien:
-	neu xoa 1 sv thi xoa luon ket qua thi cua sinh vien do
-	-> loai trigger: delete
+5. viet trigger tren bang sinh vien: 
+   neu xoa 1 sv, thi phai xoa luon ket qua thi cua sinh vien do
+	-> loai trigger: instead of delete
 */
 create trigger tg_student_remove on tbStudent
 instead of delete as
 begin
-	--1. xoa du diem thi cua sinh vien trong bang deleted
+	--1. xoa diem thi cua sinh vien trong bang deleted
 	delete from tbStudentModule 
 		where student in (select st_id from deleted)
 
@@ -141,9 +141,9 @@ sp_helptext td_delete_employee
 go
 
 
--- tao sysnonnym, la ten khac cua bang
+-- tao synonym [dbo].[sinhvien], la ten khac cua bang [tbStudentModule]
 CREATE SYNONYM [dbo].[sinhvien] 
-FOR [db2208_a0].[dbo].[tbStudentModule]
+FOR [db2208_A0].[dbo].[tbStudentModule]
 GO
 
 -- xem ds sinh vien
@@ -155,4 +155,4 @@ select * from tbStudentModule
 
 select student, module, 
 	AVG(mark) over (partition by student, module) [diem BQ]
-from tbStudentModule
+ from tbStudentModule
