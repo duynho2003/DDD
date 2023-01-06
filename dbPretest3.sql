@@ -63,7 +63,8 @@ create view vwManager
 with encryption
 as
 	select b.FullName,a.*
-	from tbLeaveDetails [a] join tbEmpDetails [b] on a.Emp_Id = b.Emp_Id where b.Desgination like 'Manager'
+	from tbLeaveDetails [a] join tbEmpDetails [b] 
+	on a.Emp_Id = b.Emp_Id where b.Desgination like 'Manager'
 	with check option
 go
 
@@ -77,13 +78,13 @@ create proc uspChangeSalary
 @amount int , @Empid varchar(5)
 as
 begin
-			select * from tbEmpDetails
-				where Emp_Id like @Empid
-			update tbEmpDetails
-				set Salary += @amount
-				where Emp_Id like @Empid
-			select * from tbEmpDetails
-				where Emp_Id like @Empid
+	select * from tbEmpDetails
+			where Emp_Id like @Empid
+	update tbEmpDetails
+			set Salary += @amount
+			where Emp_Id like @Empid
+	select * from tbEmpDetails
+			where Emp_Id like @Empid
 end
 go
 

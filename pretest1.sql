@@ -100,12 +100,12 @@ create proc uspSpecificPriceIncrease
 as
 begin
 	select * from tbRoom
-			where RoomNo = @RoomId
+			where RoomNo like @RoomId
 	update tbRoom
 			set UnitPrice += @amount
-			where RoomNo = @RoomId
+			where RoomNo like @RoomId
 	select * from tbRoom
-			where RoomNo = @RoomId
+			where RoomNo like @RoomId
 
 	-- count
 	select @count250=count(*) from tbRoom
