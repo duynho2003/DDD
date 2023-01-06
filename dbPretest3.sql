@@ -50,8 +50,6 @@ go
 
 -- xem lai bang tbEmpDetails va tbLeaveDetails
 select * from tbEmpDetails
-go
-
 select * from tbLeaveDetails
 go
 

@@ -155,14 +155,14 @@ for insert, update as
 		select @newPrice = Unitprice, @room = RoomNo from inserted
 		if (@newPrice=0)
 			begin 
-				if ((select count(*) from tbBooking where RoomNo = @room) > 0 )
+				if ((select count(*) from tbBooking where RoomNo like @room) > 0 )
 					begin
 						print 'ko the thay doi gia phong'
 						rollback
 					end
 				else 
 					begin
-						delete from tbRoom where RoomNo = @room
+						delete from tbRoom where RoomNo like @room
 						print 'Da xoa phong'
 					end
 			end
