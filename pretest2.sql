@@ -15,7 +15,7 @@ create table tbFlight (
 	FType nvarchar(10) check (FType in ('Boeing', 'Airbus')),
 	[Source] nvarchar(20) ,
 	Destination nvarchar(20),
-	DepTime datetime,
+	DepTime time,
 	JourneyHrs int,
 	primary key nonclustered (AircraftCode)
 )
@@ -37,12 +37,38 @@ go
 create index IX_Destination on tbFlight(Destination)
 go
 
+select * from tbFlight 
+	where JourneyHrs < '9'
+go
+
+create view vwBoeing
+as
+	select * from tbFlight where FType = 'Boeing'
+	with check option
+go
+
+select * from vwBoeing
+go
+
+sp_helptext vwBoeing
+go
+
 create proc uspChangeHour
-@hour int output
+@hour int , @acCode nvarchar(10)
 as
 begin
-
+	select * from tbFlight
+			where AircraftCode like @acCode
+	update tbFlight
+			set JourneyHrs += @hour
+			where AircraftCode like @acCode
+	select * from tbFlight
+			where AircraftCode like @acCode
 end
+go
+
+-- test case 1:
+exec uspChangeHour 10, 'UA02'
 go
 
 create trigger tgFlightInsert on tbFlight

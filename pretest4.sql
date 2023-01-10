@@ -91,7 +91,7 @@ as
 select p.studentId,o.stName,o.stAge,r.pName,r.Pstartdate[startdate],p.joinedDate,p.rate
 from tbStudentProject[p] join tbStudents[o] on p.studentId = o.stID
 join tbProjects[r] on p.projectID = r.pID
-	where r.Pstartdate < '2020-07-01'
+	where r.Pstartdate < '2020-06-01'
 
 with check option
 go
